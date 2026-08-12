@@ -1,15 +1,25 @@
 package com.tweteroo.api.models;
 
+import com.tweteroo.api.dtos.request.CreateUserRequest;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
 
+@Getter
 @Entity
 @Table(name = "users")
 public class UserModel {
+
+  public UserModel(CreateUserRequest dto) {
+    this.avatar = dto.avatar();
+    this.username = dto.username();
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
