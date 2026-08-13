@@ -1,5 +1,6 @@
 package com.tweteroo.api.services;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,6 +24,14 @@ public class UserService {
     UserModel user = new UserModel(body);
     this.userRepository.save(user);
     return UserResponse.from(user);
+  }
+
+  public List<UserResponse> getAll() {
+    return this.userRepository
+        .findAll()
+        .stream()
+        .map(UserResponse::from)
+        .toList();
   }
 
   public Optional<UserResponse> getById(UUID userId) {

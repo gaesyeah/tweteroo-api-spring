@@ -1,5 +1,6 @@
 package com.tweteroo.api.controllers;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,11 @@ public class UserController {
   @PostMapping
   public UserResponse create(@RequestBody @Valid CreateUserRequest body) {
     return this.userService.create(body);
+  }
+
+  @GetMapping()
+  public List<UserResponse> getAll() {
+    return this.userService.getAll();
   }
 
   @GetMapping("/{userId}")
