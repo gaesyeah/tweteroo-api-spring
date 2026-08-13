@@ -19,8 +19,8 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
-  public UserResponse create(CreateUserRequest dto) {
-    UserModel user = new UserModel(dto);
+  public UserResponse create(CreateUserRequest body) {
+    UserModel user = new UserModel(body);
     this.userRepository.save(user);
     return UserResponse.from(user);
   }

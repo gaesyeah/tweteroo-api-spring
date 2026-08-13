@@ -2,5 +2,12 @@ package com.tweteroo.api.dtos.response;
 
 import java.util.UUID;
 
-public record TweetResponse(String text, UUID userId, UserResponse user) {
+import com.tweteroo.api.models.TweetModel;
+
+public record TweetResponse(UUID id, String text, UserResponse user) {
+
+  public static TweetResponse from(TweetModel tweet) {
+    return new TweetResponse(tweet.getId(), tweet.getText(), UserResponse.from(tweet.getUser()));
+  }
+
 }
