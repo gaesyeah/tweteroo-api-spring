@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.tweteroo.api.dtos.request.CreateTweetRequest;
+import com.tweteroo.api.dtos.request.PatchTweetRequest;
 import com.tweteroo.api.dtos.response.TweetResponse;
 import com.tweteroo.api.models.TweetModel;
 import com.tweteroo.api.repositories.TweetRepository;
@@ -23,19 +24,27 @@ public class TweetService {
     this.userRepository = userRepository;
   }
 
-  public Optional<TweetResponse> create(CreateTweetRequest body) {
-    return this.userRepository
-        .findById(body.userId())
+  public Optional<TweetResponse> create(CreateTweetRequest dto) {
+    return this.userRepository.findById(dto.userId())
         .map(user -> {
-          TweetModel tweet = new TweetModel(body.text(), user);
+          TweetModel tweet = new TweetModel(dto, user);
+          this.tweetRepository.save(tweet);
+          return TweetResponse.from(tweet);
+        });
+  }
+
+  public Optional<TweetResponse> patch(UUID id, PatchTweetRequest dto) {
+    return this.tweetRepository.findById(id)
+        .map(tweet -> {
+          Optional.ofNullable(dto.title()).ifPresent(tweet::setTitle);
+          Optional.ofNullable(dto.text()).ifPresent(tweet::setText);
           this.tweetRepository.save(tweet);
           return TweetResponse.from(tweet);
         });
   }
 
   public List<TweetResponse> getAll() {
-    return this.tweetRepository
-        .findAll()
+    return this.tweetRepository.findAll()
         .stream()
         .map(TweetResponse::from)
         .toList();
@@ -44,8 +53,7 @@ public class TweetService {
   public List<TweetResponse> getAllByUserId(UUID userId) {
     // Vai retornar um array vazio se o usuário não existir.
     // Buscar o usuário antes é desnecessário e não performático.
-    return this.tweetRepository
-        .findAllByUserId(userId)
+    return this.tweetRepository.findAllByUserId(userId)
         .stream()
         .map(TweetResponse::from)
         .toList();

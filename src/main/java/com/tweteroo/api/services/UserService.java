@@ -20,23 +20,21 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
-  public UserResponse create(CreateUserRequest body) {
-    UserModel user = new UserModel(body);
+  public UserResponse create(CreateUserRequest dto) {
+    UserModel user = new UserModel(dto);
     this.userRepository.save(user);
     return UserResponse.from(user);
   }
 
   public List<UserResponse> getAll() {
-    return this.userRepository
-        .findAll()
+    return this.userRepository.findAll()
         .stream()
         .map(UserResponse::from)
         .toList();
   }
 
   public Optional<UserResponse> getById(UUID userId) {
-    return this.userRepository
-        .findById(userId)
+    return this.userRepository.findById(userId)
         .map(UserResponse::from);
   }
 
