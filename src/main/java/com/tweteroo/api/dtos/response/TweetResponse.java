@@ -1,7 +1,6 @@
 package com.tweteroo.api.dtos.response;
 
-public record TweetResponse(
-    String text,
-    Long userId,
-    UserResponse user) {
+import java.util.UUID;
+
+public record TweetResponse(String text, UUID userId, UserResponse user) {
 }

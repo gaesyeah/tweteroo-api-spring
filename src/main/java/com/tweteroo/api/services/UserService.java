@@ -1,6 +1,7 @@
 package com.tweteroo.api.services;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class UserService {
     return UserResponse.from(user);
   }
 
-  public Optional<UserResponse> getById(Long userId) {
+  public Optional<UserResponse> getById(UUID userId) {
     return this.userRepository
         .findById(userId)
         .map(UserResponse::from);
