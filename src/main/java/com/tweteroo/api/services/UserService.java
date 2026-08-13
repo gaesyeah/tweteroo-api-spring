@@ -1,5 +1,7 @@
 package com.tweteroo.api.services;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.tweteroo.api.dtos.request.CreateUserRequest;
@@ -16,9 +18,16 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
-  public UserResponse save(CreateUserRequest dto) {
+  public UserResponse create(CreateUserRequest dto) {
     UserModel user = new UserModel(dto);
     this.userRepository.save(user);
     return UserResponse.from(user);
   }
+
+  public Optional<UserResponse> getById(Long userId) {
+    return this.userRepository
+        .findById(userId)
+        .map(UserResponse::from);
+  }
+
 }

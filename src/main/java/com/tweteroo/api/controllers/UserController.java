@@ -1,5 +1,8 @@
 package com.tweteroo.api.controllers;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,8 +25,15 @@ public class UserController {
   }
 
   @PostMapping()
-  public UserResponse createUser(@RequestBody @Valid CreateUserRequest body) {
-    return this.userService.save(body);
+  public UserResponse create(@RequestBody @Valid CreateUserRequest body) {
+    return this.userService.create(body);
+  }
+
+  @GetMapping("/{userId}")
+  public ResponseEntity<UserResponse> getById(@PathVariable Long userId) {
+    return this.userService.getById(userId)
+        .map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
   }
 
 }
